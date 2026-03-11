@@ -1,11 +1,32 @@
 import { Box } from '../components/Box';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  DeviceEventEmitter,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { appEvents } from '../config/events';
 
 export const HomeScreen = () => {
   const [randoms, setRandoms] = useState({ a: 0, b: 0 });
   const [answers, setAnswers] = useState<number[]>([]);
+
+  // Set Referance and position for Dropzone
+  const dropRef = useRef<View>(null);
+  const [dropZone, setDropZone] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }>({
+    height: 0,
+    width: 0,
+    x: 0,
+    y: 0,
+  });
 
   function shuffle(arr: number[]) {
     for (let i = arr.length - 1; i > 0; i--) {
@@ -35,9 +56,20 @@ export const HomeScreen = () => {
     setAnswers(shuffle(options));
   };
 
+  // Emit event to reset options position & style
   const next = () => {
+    DeviceEventEmitter.emit(appEvents.onNext);
     generateRandom();
   };
+
+  // Get position of droping place
+  useEffect(() => {
+    setTimeout(() => {
+      dropRef.current?.measure((x, y, width, height, pageX, pageY) => {
+        setDropZone({ x: pageX, y: pageY, width, height });
+      });
+    }, 300);
+  }, []);
 
   useEffect(() => {
     generateRandom();
@@ -46,19 +78,46 @@ export const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.question}>
+      <View style={styles.view}>
         <Text style={styles.questionText}>{`${randoms.a} + ${randoms.b}`}</Text>
+        {/* Drop point */}
+        <View
+          ref={dropRef}
+          onLayout={e => {
+            setDropZone(e.nativeEvent.layout);
+          }}
+          style={styles.box}
+        />
+        <View style={styles.options}>
+          <Box
+            value={answers[0]}
+            answer={randoms.a + randoms.b}
+            dropZone={dropZone}
+            index={0}
+          />
+          <Box
+            value={answers[1]}
+            answer={randoms.a + randoms.b}
+            dropZone={dropZone}
+            index={1}
+          />
+          <Box
+            value={answers[2]}
+            answer={randoms.a + randoms.b}
+            dropZone={dropZone}
+            index={2}
+          />
+          <Box
+            value={answers[3]}
+            answer={randoms.a + randoms.b}
+            dropZone={dropZone}
+            index={3}
+          />
+        </View>
+        <TouchableOpacity onPress={next}>
+          <Text>{'Next'}</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.box} />
-      <View style={styles.options}>
-        <Box value={answers[0]} />
-        <Box value={answers[1]} />
-        <Box value={answers[2]} />
-        <Box value={answers[3]} />
-      </View>
-      <TouchableOpacity onPress={next}>
-        <Text>{'Next'}</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -66,19 +125,20 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 24,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF',
   },
-  box: {
-    width: 70,
-    height: 70,
-    borderWidth: 1,
-    borderRadius: 12,
+  view: {
+    gap: 24,
+    position: 'absolute',
+    alignItems: 'center',
   },
-  question: {
-    paddingBottom: 20,
+  box: {
+    width: 80,
+    height: 80,
+    borderWidth: 1,
+    borderRadius: 10,
   },
   questionText: {
     fontSize: 40,
