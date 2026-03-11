@@ -1,12 +1,6 @@
 import { Box } from '../components/Box';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  DeviceEventEmitter,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { DeviceEventEmitter, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { appEvents } from '../config/events';
 
@@ -72,6 +66,18 @@ export const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener(
+      appEvents.afterAnswer,
+      () => {
+        next();
+      },
+    );
+
+    return () => subscription.remove();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     generateRandom();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -114,9 +120,6 @@ export const HomeScreen = () => {
             index={3}
           />
         </View>
-        <TouchableOpacity onPress={next}>
-          <Text>{'Next'}</Text>
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

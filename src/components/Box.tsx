@@ -22,7 +22,13 @@ export const Box = (props: Props) => {
   const prevPositionX = useSharedValue(0);
   const prevPositionY = useSharedValue(0);
   const scale = useSharedValue(1);
-  const [isCorrect, setIsCorrect] = useState<boolean>(false);
+  const [isCorrect, setIsCorrect] = useState<-1 | 0 | 1>(0);
+
+  const emitAfterAnswer = () => {
+    setTimeout(() => {
+      DeviceEventEmitter.emit(appEvents.afterAnswer);
+    }, 500);
+  };
 
   // Set Gesture Detector
   const panGesture = Gesture.Pan()
@@ -64,14 +70,32 @@ export const Box = (props: Props) => {
           );
           positionY.value = withTiming(
             Platform.OS === 'android'
-              ? props.dropZone.y - 528
-              : props.dropZone.y - 506,
+              ? props.dropZone.y - 548
+              : props.dropZone.y - 526,
           );
-          runOnJS(setIsCorrect)(true);
+          runOnJS(setIsCorrect)(1);
         } else {
-          positionX.value = withTiming(0);
-          positionY.value = withTiming(0);
+          positionX.value = withTiming(
+            Platform.OS === 'android'
+              ? props.dropZone.x -
+                  props.index * 80 -
+                  props.dropZone.width +
+                  (3 - props.index) * 12 -
+                  2
+              : props.dropZone.x -
+                  props.index * 80 -
+                  props.dropZone.width +
+                  (3 - props.index) * 12 +
+                  2,
+          );
+          positionY.value = withTiming(
+            Platform.OS === 'android'
+              ? props.dropZone.y - 548
+              : props.dropZone.y - 526,
+          );
+          runOnJS(setIsCorrect)(-1);
         }
+        runOnJS(emitAfterAnswer)();
       }
     });
 
@@ -87,7 +111,7 @@ export const Box = (props: Props) => {
     const subscription = DeviceEventEmitter.addListener(
       appEvents.onNext,
       () => {
-        setIsCorrect(false);
+        setIsCorrect(0);
         positionX.value = 0;
         positionY.value = 0;
       },
@@ -103,7 +127,11 @@ export const Box = (props: Props) => {
         style={[
           styles.box,
           animatedStyle,
-          isCorrect ? styles.correctAnswer : null,
+          isCorrect === 1
+            ? styles.correctAnswer
+            : isCorrect === -1
+            ? styles.wrongAnswer
+            : null,
         ]}
       >
         <Text style={styles.text}>{props.value}</Text>
@@ -120,6 +148,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  wrongAnswer: {
+    backgroundColor: 'red',
   },
   correctAnswer: {
     backgroundColor: 'green',
