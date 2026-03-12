@@ -24,9 +24,9 @@ export const Box = (props: Props) => {
   const scale = useSharedValue(1);
   const [isCorrect, setIsCorrect] = useState<-1 | 0 | 1>(0);
 
-  const emitAfterAnswer = () => {
+  const emitAfterAnswer = (correct: -1 | 0 | 1) => {
     setTimeout(() => {
-      DeviceEventEmitter.emit(appEvents.afterAnswer);
+      DeviceEventEmitter.emit(appEvents.afterAnswer, correct);
     }, 500);
   };
 
@@ -53,49 +53,27 @@ export const Box = (props: Props) => {
         fingerY > props.dropZone.y &&
         fingerY < props.dropZone.y + props.dropZone.height;
       if (isInside) {
-        if (props.value === props.answer) {
-          // Fit box into dropZone
-          positionX.value = withTiming(
-            Platform.OS === 'android'
-              ? props.dropZone.x -
-                  props.index * 80 -
-                  props.dropZone.width +
-                  (3 - props.index) * 12 -
-                  2
-              : props.dropZone.x -
-                  props.index * 80 -
-                  props.dropZone.width +
-                  (3 - props.index) * 12 +
-                  2,
-          );
-          positionY.value = withTiming(
-            Platform.OS === 'android'
-              ? props.dropZone.y - 548
-              : props.dropZone.y - 526,
-          );
-          runOnJS(setIsCorrect)(1);
-        } else {
-          positionX.value = withTiming(
-            Platform.OS === 'android'
-              ? props.dropZone.x -
-                  props.index * 80 -
-                  props.dropZone.width +
-                  (3 - props.index) * 12 -
-                  2
-              : props.dropZone.x -
-                  props.index * 80 -
-                  props.dropZone.width +
-                  (3 - props.index) * 12 +
-                  2,
-          );
-          positionY.value = withTiming(
-            Platform.OS === 'android'
-              ? props.dropZone.y - 548
-              : props.dropZone.y - 526,
-          );
-          runOnJS(setIsCorrect)(-1);
-        }
-        runOnJS(emitAfterAnswer)();
+        const result: -1 | 1 = props.value === props.answer ? 1 : -1;
+        positionX.value = withTiming(
+          Platform.OS === 'android'
+            ? props.dropZone.x -
+                props.index * 80 -
+                props.dropZone.width +
+                (3 - props.index) * 12 -
+                2
+            : props.dropZone.x -
+                props.index * 80 -
+                props.dropZone.width +
+                (3 - props.index) * 12 +
+                2,
+        );
+        positionY.value = withTiming(
+          Platform.OS === 'android'
+            ? props.dropZone.y - 538
+            : props.dropZone.y - 514,
+        );
+        runOnJS(setIsCorrect)(result);
+        runOnJS(emitAfterAnswer)(result);
       }
     });
 
@@ -134,7 +112,7 @@ export const Box = (props: Props) => {
             : null,
         ]}
       >
-        <Text style={styles.text}>{props.value}</Text>
+        <Text style={[styles.text, styles.correctText]}>{props.value}</Text>
       </Animated.View>
     </GestureDetector>
   );
@@ -148,14 +126,20 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    borderColor: '#E5E5E5',
+    backgroundColor: '#7C3AED',
   },
   wrongAnswer: {
-    backgroundColor: 'red',
+    backgroundColor: '#DC2626',
   },
   correctAnswer: {
-    backgroundColor: 'green',
+    backgroundColor: '#16A34A',
+  },
+  correctText: {
+    color: '#FFFFFF',
   },
   text: {
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });

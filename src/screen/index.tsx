@@ -1,12 +1,21 @@
 import { Box } from '../components/Box';
 import React, { useEffect, useRef, useState } from 'react';
-import { DeviceEventEmitter, StyleSheet, Text, View } from 'react-native';
+import {
+  DeviceEventEmitter,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { appEvents } from '../config/events';
 
 export const HomeScreen = () => {
   const [randoms, setRandoms] = useState({ a: 0, b: 0 });
   const [answers, setAnswers] = useState<number[]>([]);
+  const [showResult, setShowResult] = useState<boolean>(false);
+  const score = useRef<number>(0);
+  const count = useRef<number>(1);
 
   // Set Referance and position for Dropzone
   const dropRef = useRef<View>(null);
@@ -56,6 +65,13 @@ export const HomeScreen = () => {
     generateRandom();
   };
 
+  // Retry Quiz
+  const retry = () => {
+    setShowResult(false);
+    score.current = 0;
+    next();
+  };
+
   // Get position of droping place
   useEffect(() => {
     setTimeout(() => {
@@ -68,8 +84,15 @@ export const HomeScreen = () => {
   useEffect(() => {
     const subscription = DeviceEventEmitter.addListener(
       appEvents.afterAnswer,
-      () => {
-        next();
+      (result: -1 | 0 | 1) => {
+        if (count.current < 20) {
+          if (result === 1) score.current = score.current + 1;
+          next();
+          count.current = count.current + 1;
+        } else {
+          setShowResult(true);
+          count.current = 1;
+        }
       },
     );
 
@@ -85,7 +108,11 @@ export const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.view}>
-        <Text style={styles.questionText}>{`${randoms.a} + ${randoms.b}`}</Text>
+        <Text style={styles.questionText}>
+          {showResult
+            ? 'Quiz Over'
+            : `${count.current}: ${randoms.a} + ${randoms.b}`}
+        </Text>
         {/* Drop point */}
         <View
           ref={dropRef}
@@ -120,6 +147,14 @@ export const HomeScreen = () => {
             index={3}
           />
         </View>
+        {showResult && (
+          <Text style={styles.result}>{`Result: ${score.current}/20`}</Text>
+        )}
+        {showResult && (
+          <TouchableOpacity style={styles.button} onPress={retry}>
+            <Text style={styles.buttonText}>{'Retry'}</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -130,7 +165,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F3F4F6',
   },
   view: {
     gap: 24,
@@ -143,12 +178,27 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
   },
+  result: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  buttonText: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontWeight: '500',
+  },
+  button: {
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: '#A1A1A1',
+  },
   questionText: {
     fontSize: 40,
     fontWeight: 'bold',
   },
   options: {
     gap: 12,
+    paddingBottom: 24,
     flexDirection: 'row',
   },
 });
