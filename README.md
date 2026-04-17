@@ -1,97 +1,107 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Hi, I'm Tarang Patel 👋
 
-# Getting Started
+React Native Developer with 8+ months of hands-on experience building production-oriented mobile applications.  
+Currently working at **Silversky Technology**, focusing on scalable architecture, reusable components, and maintainable codebases.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+I specialize in **feature-based architecture**, strong TypeScript typing patterns, and building apps that are structured for long-term growth.
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 🚀 Core Expertise
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- Feature-based architecture design
+- Reusable & scalable component systems
+- Strong TypeScript typing patterns
+- API integration & data management
+- State management using Redux Toolkit & TanStack Query
+- Clean and maintainable code practices
+- Production-focused folder structure
+- Performance-conscious development
+- Git-based collaboration workflows
 
-```sh
-# Using npm
-npm start
+---
 
-# OR using Yarn
-yarn start
-```
+## 🛠 Tech Stack
 
-## Step 2: Build and run your app
+### Languages
+- TypeScript
+- JavaScript
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### Mobile Development
+- React Native
+- React Navigation
+- Redux Toolkit
+- TanStack Query
+- Axios
 
-### Android
+### Backend / Cloud Integration
+- Firebase
+- AWS
 
-```sh
-# Using npm
-npm run android
+### Utilities & Tooling
+- Git
+- GitHub / GitLab
+- i18n (Localization)
+- Notifee (Push notifications)
 
-# OR using Yarn
-yarn android
-```
+---
 
-### iOS
+## 💼 Experience
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+### React Native Developer — Silversky Technology
+**Duration:** 8+ months
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+Responsibilities:
+- Developing mobile applications using React Native
+- Designing reusable and modular component structures
+- Implementing scalable feature-based architecture
+- Integrating REST APIs with structured data handling
+- Collaborating with team using Git workflows
+- Maintaining clean, readable, and maintainable code
 
-```sh
-bundle install
-```
+---
 
-Then, and every time you update your native dependencies, run:
+## 📌 Current Focus
 
-```sh
-bundle exec pod install
-```
+- Building production-level React Native applications
+- Strengthening architectural decision making
+- Improving problem-solving skills through DSA
+- Expanding portfolio with real-world projects
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+---
 
-```sh
-# Using npm
-npm run ios
+## 📂 Featured Work (in progress)
 
-# OR using Yarn
-yarn ios
-```
+I am actively building personal projects to strengthen architecture skills:
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+- Realtime Chat Application (scalable structure, real-time data handling)
+- Expense Tracker (clean architecture & state management patterns)
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+More projects will be added regularly.
 
-## Step 3: Modify your app
+---
 
-Now that you have successfully run the app, let's make changes!
+## 📊 Development Principles
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+- Write code for long-term maintainability
+- Prefer composition over complexity
+- Strong typing reduces runtime errors
+- Structure code for scalability from day one
+- Focus on readability and predictability
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+---
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## 🔗 Connect With Me
 
-## Congratulations! :tada:
+LinkedIn  
+https://www.linkedin.com/in/tarang-patel-08246b28a
 
-You've successfully run and modified your React Native App. :partying_face:
+LeetCode  
+https://leetcode.com/u/TarangPatel0
 
-### Now what?
+GitHub  
+https://github.com/tarangpatel03
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+---
 
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Always learning, refining architecture skills, and building better mobile applications.
